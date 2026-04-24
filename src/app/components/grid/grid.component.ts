@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router'; // Import Router
-import { Location } from '@angular/common'; // Import Location
+import { ActivatedRoute, Params } from '@angular/router';
+import { Location } from '@angular/common';
 import { Cell, Grid, Row, Team, TeamCount } from '../../contracts';
 
-const displayNames = ['Team One', 'Team Two', 'Team Three', 'Team Four'];
+const displayNames = ['Μπλε Ομάδα', 'Κόκκινη Ομάδα', 'Πράσινη Ομάδα', 'Γαλάζια Ομάδα'];
 const DEFAULT_GRID_SIZE = 5;
 const DEFAULT_TEAM_COUNT = 2;
 const DEFAULT_CARD_COUNT = 8;
@@ -24,6 +24,8 @@ export class GridComponent {
 
     public assassins?: Cell[];
     public teams?: Team[];
+
+    public linkCopied = false;
 
     private _errorMessage: string | undefined;
 
@@ -61,43 +63,32 @@ export class GridComponent {
         }
     }
 
-    public getCellStyle(cell: Cell): string | undefined {
+    public getCellStyle(cell: Cell): string {
         if (this.assassins?.some((assassin) => cellMatch(assassin, cell))) {
-            return `bg-dark`;
+            return 'cell-assassin';
         }
 
         if (this.teams?.[0]?.cells.some((teamCard) => cellMatch(teamCard, cell))) {
-            return `bg-primary`;
+            return 'cell-blue';
         }
 
         if (this.teams?.[1]?.cells.some((teamCard) => cellMatch(teamCard, cell))) {
-            return `bg-danger`;
+            return 'cell-red';
         }
 
         if (this.teams?.[2]?.cells.some((teamCard) => cellMatch(teamCard, cell))) {
-            return `bg-success`;
+            return 'cell-green';
         }
 
         if (this.teams?.[3]?.cells.some((teamCard) => cellMatch(teamCard, cell))) {
-            return `bg-info`;
+            return 'cell-cyan';
         }
 
-        return `bg-warning bg-opacity-50`;
+        return 'cell-neutral';
     }
 
-    public getTextStyle(team: number): string | undefined {
-        switch (team) {
-            case 0:
-                return 'text-primary';
-            case 1:
-                return 'text-danger';
-            case 2:
-                return 'text-success';
-            case 3:
-                return 'text-info';
-            default:
-                throw new Error(`Unknown team index: ${team}`);
-        }
+    public getTeamCardStyle(index: number): string {
+        return `team-card-${index}`;
     }
 
     public newGame(): void {
@@ -127,19 +118,19 @@ export class GridComponent {
         this.teams = teams;
     }
 
+    public copyLink(): void {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            this.linkCopied = true;
+            setTimeout(() => (this.linkCopied = false), 2000);
+        });
+    }
+
     private generateGame(
         teamCount: number,
         cardCount: number,
         assassinCount: number,
     ): { assassins: Cell[]; teams: Team[]; grid: Grid<number> } {
         this._errorMessage = undefined;
-
-        console.log(`Generating new game`, {
-            gridSize: this.gridSize,
-            teamCount: this.teamCount,
-            cardCount: this.cardCount,
-            assassinCount: this.assassinCount,
-        });
 
         const grid = generateGrid(this.gridSize);
 
@@ -170,12 +161,10 @@ export class GridComponent {
             return { assassins, teams, grid };
         } catch (error) {
             if (cells.length === 0) {
-                this._errorMessage = `Grid not big enough for team and card count!`;
+                this._errorMessage = `Το πλέγμα δεν είναι αρκετά μεγάλο για τον αριθμό ομάδων και καρτών!`;
             } else {
                 this._errorMessage = String(error);
             }
-
-            console.error(`Error generating game`, { error, message: this._errorMessage });
 
             return { assassins: [], teams: [], grid };
         }
