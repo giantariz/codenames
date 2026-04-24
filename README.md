@@ -1,94 +1,86 @@
-# CodeNames
+# Κωδικά Ονόματα
 
-CodeNames is a web application for playing the popular word game "Codenames". This application allows users to set up a game with customizable settings and play with multiple teams.
+**Κωδικά Ονόματα** είναι μια διαδικτυακή εφαρμογή για το δημοφιλές παιχνίδι λέξεων "Codenames". Δημιουργεί τυχαία ταμπλό που μπορούν να μοιραστούν μεταξύ παικτών μέσω συνδέσμου.
 
-## Features
+## Χαρακτηριστικά
 
-- Customizable game settings including team count, grid size, card count, and assassin count.
-- Dynamic grid generation based on the specified settings.
-- Shareable url allows a generated board to be shared between players of the game
-- play with no assassin or multiple assassins
+- Προσαρμόσιμες ρυθμίσεις: αριθμός ομάδων, μέγεθος πλέγματος, αριθμός καρτών και δολοφόνων
+- Δυναμική δημιουργία πλέγματος βάσει των ρυθμίσεων
+- Κοινόχρηστος σύνδεσμος — κάθε νέο παιχνίδι παράγει μοναδικό URL που μπορούν να ανοίξουν όλοι οι Αρχηγοί Κατασκόπων
+- Υποστήριξη παιχνιδιού χωρίς δολοφόνο ή με πολλούς δολοφόνους
+- Εμφάνιση για Μπλε και Κόκκινη ομάδα (και Πράσινη/Γαλάζια για περισσότερες ομάδες)
 
-## How to Play
+## Πώς να Παίξετε
 
- - Generate your own custom board with the desired number of teams (up to 4), assassin count (usually 1 less than the number of teams), card count and grid size.
- - If you are playing with 3 teams you will most likely need to generate a 6 * 6 grid so that it is big enough for the all cards for all the teams (dependent on the number of cards and assassins selected)
- - Once the board is generated share the url of the board with all the Spymasters playing the game. They will all get the same randomly generated board
- - Lay out the codenames as usual according to the grid size generated
- - If playing with more than 2 teams (or with more than 8 cards per team) additional cards will be needed for the new teams. The colors are green and light blue. These can be made from any card or paper or could even be buttons or any sort of marker.
- - The team with the randomly selected additional card goes first.
+1. Ρυθμίστε τις επιλογές παιχνιδιού (αριθμός ομάδων, μέγεθος πλέγματος κ.λπ.).
+2. Πατήστε **«Δημιουργία Νέου Παιχνιδιού»** — το URL ενημερώνεται αυτόματα.
+3. Μοιραστείτε το URL με όλους τους Αρχηγούς Κατασκόπων. Όλοι θα δουν το ίδιο ταμπλό.
+4. Απλώστε τις κάρτες Codenames σύμφωνα με το πλέγμα.
+5. Η ομάδα με την επιπλέον κάρτα (τυχαία επιλεγμένη) παίζει πρώτη.
 
-## Building the application
+> **Σημείωση:** Για 3 ομάδες συνιστάται πλέγμα 6×6 ώστε να υπάρχει χώρος για όλες τις κάρτες.
 
-### Prerequisites
+## Εγκατάσταση
 
-- Node.js and npm installed on your machine.
-- Angular CLI installed globally.
+### Προαπαιτούμενα
 
-### Installation
+- Node.js και npm
+- Angular CLI (`npm install -g @angular/cli`)
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/your-username/codenames.git
-    cd codenames
-    ```
+### Βήματα
 
-2. Install the dependencies:
-    ```sh
-    npm install
-    ```
+```sh
+git clone https://github.com/your-username/codenames.git
+cd codenames
+npm install
+```
 
-### Running the Application
+### Εκτέλεση σε Development
 
-1. Start the development server:
-    ```sh
-    npm run start
-    ```
+```sh
+npm run start
+```
 
-2. Open your browser and navigate to `http://localhost:4200`.
+Ανοίξτε τον browser στο `http://localhost:4200`.
 
-### Building the Application
+### Δημιουργία για Παραγωγή
 
-To build the application for production, run:
 ```sh
 npm run build
 ```
 
-The build artifacts will be stored in the `dist/` directory.
+Τα αρχεία παραγωγής αποθηκεύονται στον φάκελο `dist/codenames/`.
 
-### Running the website
+## Ανάπτυξη στο Netlify
 
-The app is available at:  
-[https://codenames.cineworld-planner.co.uk/](https://codenames.cineworld-planner.co.uk/)
+Το έργο περιλαμβάνει αρχείο `netlify.toml` για αυτόματη ανάπτυξη. Συνδέστε το αποθετήριο στο Netlify και θα χρησιμοποιηθούν αυτόματα οι ρυθμίσεις:
 
-## Project Structure
+- **Εντολή build:** `npm run build`
+- **Φάκελος δημοσίευσης:** `dist/codenames`
 
-- `src/app/components/`: Contains the Angular components used in the application.
-  - `app/`: Main application component.
-  - `grid/`: Grid component for displaying the game grid.
-- `src/app/contracts/`: Contains TypeScript interfaces and types used in the application.
-- `src/app/app-routing.module.ts`: Defines the application routes.
-- `src/app/app.module.ts`: Main application module.
+## Δομή Έργου
 
-## Usage
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── app/          — Κεντρικό component (router outlet)
+│   │   └── grid/         — Component παιχνιδιού
+│   ├── app-routing.module.ts
+│   └── app.module.ts
+├── index.html
+└── styles.scss
+```
 
-### Game Settings
+## Ρυθμίσεις Παιχνιδιού
 
-You can customize the game settings using the input fields provided in the UI:
-- **Team Count**: Number of teams (2-4).
-- **Grid Size**: Size of the grid (minimum 2).
-- **Card Count**: Number of cards per team (minimum 2).
-- **Assassin Count**: Number of assassins (minimum 1).
+| Ρύθμιση | Περιγραφή | Προεπιλογή |
+|---|---|---|
+| Αριθμός Ομάδων | 2–4 ομάδες | 2 |
+| Μέγεθος Πλέγματος | Ελάχιστο 2 | 5 |
+| Κάρτες ανά Ομάδα | Ελάχιστο 2 | 8 |
+| Αριθμός Δολοφόνων | Ελάχιστο 0 | 1 |
 
-### Generating a New Game
+## Άδεια Χρήσης
 
-Click the "Generate" button to create a new game with the specified settings. The game grid and team cards will be displayed based on the settings.
-
-### Sharing Game Configurations
-
-The application uses route parameters to save and share game configurations. You can copy the URL from the address bar and share it with others to load the same game configuration.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
+Αυτό το έργο διατίθεται υπό την [Άδεια MIT](LICENSE).
